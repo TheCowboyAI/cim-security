@@ -65,7 +65,9 @@ pub trait Authenticator: Send + Sync {
 
     /// Revoke authentication
     async fn revoke(&self, context: &AuthContext) -> Result<()> {
-        // Default implementation does nothing
+        // TODO: Default implementation does nothing - implementors should override
+        // to actually revoke the authentication (e.g., invalidate tokens, clear sessions)
+        let _ = context; // Acknowledge unused parameter
         Ok(())
     }
 
@@ -151,7 +153,9 @@ pub trait Credentials: Send + Sync {
 /// Username/password credentials
 #[derive(Clone, Debug)]
 pub struct PasswordCredentials {
+    /// The username for authentication
     pub username: String,
+    /// The password for authentication
     pub password: String,
 }
 
@@ -168,7 +172,9 @@ impl Credentials for PasswordCredentials {
 /// Token-based credentials
 #[derive(Clone, Debug)]
 pub struct TokenCredentials {
+    /// The authentication token
     pub token: String,
+    /// The type of token (e.g., "Bearer")
     pub token_type: String,
 }
 
@@ -195,7 +201,9 @@ impl Credentials for TokenCredentials {
 /// Certificate-based credentials
 #[derive(Clone, Debug)]
 pub struct CertificateCredentials {
+    /// The certificate data in DER or PEM format
     pub certificate: Vec<u8>,
+    /// The optional private key data
     pub private_key: Option<Vec<u8>>,
 }
 

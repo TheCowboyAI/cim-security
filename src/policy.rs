@@ -132,7 +132,12 @@ pub enum PolicyCondition {
     /// Matches if the identity has any of the specified claims
     HasAnyClaim(Vec<String>),
     /// Matches if a property equals a value
-    PropertyEquals { key: String, value: String },
+    PropertyEquals { 
+        /// The property key to check
+        key: String, 
+        /// The expected value
+        value: String 
+    },
     /// Matches if all sub-conditions match
     And(Vec<PolicyCondition>),
     /// Matches if any sub-condition matches
@@ -200,7 +205,9 @@ pub trait PolicyEvaluator: Send + Sync {
 
     /// Evaluate custom conditions
     async fn evaluate_custom(&self, context: &AuthContext, condition: &str) -> Result<bool> {
-        // Default implementation returns false
+        // TODO: Default implementation returns false - implementors should override
+        // to evaluate custom conditions based on context and condition string
+        let _ = (context, condition); // Acknowledge unused parameters
         Ok(false)
     }
 }
@@ -259,6 +266,7 @@ impl PolicyDecision {
 }
 
 /// Default policy evaluator implementation
+#[derive(Debug)]
 pub struct DefaultPolicyEvaluator;
 
 #[async_trait]
@@ -334,8 +342,7 @@ fn pattern_matches(pattern: &str, value: &str) -> bool {
         return true;
     }
 
-    if pattern.ends_with('*') {
-        let prefix = &pattern[..pattern.len() - 1];
+    if let Some(prefix) = pattern.strip_suffix('*') {
         value.starts_with(prefix)
     } else {
         pattern == value

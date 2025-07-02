@@ -105,8 +105,8 @@ pub trait Mac: Send + Sync {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::error::SecurityError;
-    use std::collections::HashMap;
+    
+    
 
     /// Mock signer for testing
     struct MockSigner {

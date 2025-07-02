@@ -26,7 +26,12 @@ pub enum SecurityError {
 
     /// Claim expired
     #[error("Claim expired: {claim_type} for subject {subject}")]
-    ClaimExpired { claim_type: String, subject: String },
+    ClaimExpired { 
+        /// The type of claim that expired
+        claim_type: String, 
+        /// The subject of the expired claim
+        subject: String 
+    },
 
     /// Secret not found
     #[error("Secret not found: {0}")]

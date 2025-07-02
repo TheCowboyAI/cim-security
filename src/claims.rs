@@ -1,13 +1,9 @@
 //! Claims and identity abstractions
 
-use crate::{
-    error::{Result, SecurityError},
-    types::*,
-};
+use crate::error::Result;
 use async_trait::async_trait;
 use chrono::{DateTime, Duration, Utc};
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 /// A security claim
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]

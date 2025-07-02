@@ -4,11 +4,12 @@ use crate::{auth::AuthContext, claims::ClaimsIdentity};
 use std::sync::Arc;
 
 /// Thread-safe security context
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct SecurityContext {
     inner: Arc<SecurityContextInner>,
 }
 
+#[derive(Debug)]
 struct SecurityContextInner {
     auth_context: Option<AuthContext>,
     ambient_authority: ClaimsIdentity,
@@ -68,6 +69,7 @@ impl SecurityContext {
 }
 
 /// Builder for security context
+#[derive(Debug)]
 pub struct SecurityContextBuilder {
     auth_context: Option<AuthContext>,
     ambient_authority: Option<ClaimsIdentity>,
@@ -124,9 +126,8 @@ impl Default for SecurityContextBuilder {
     }
 }
 
-/// Thread-local security context storage
 thread_local! {
-    static CURRENT_CONTEXT: std::cell::RefCell<Option<SecurityContext>> = std::cell::RefCell::new(None);
+    static CURRENT_CONTEXT: std::cell::RefCell<Option<SecurityContext>> = const { std::cell::RefCell::new(None) };
 }
 
 /// Get the current security context
