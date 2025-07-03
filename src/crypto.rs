@@ -105,8 +105,6 @@ pub trait Mac: Send + Sync {
 #[cfg(test)]
 mod tests {
     use super::*;
-    
-    
 
     /// Mock signer for testing
     struct MockSigner {

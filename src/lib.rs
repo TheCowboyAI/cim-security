@@ -84,8 +84,8 @@ pub mod prelude {
             TokenCredentials,
         },
         claims::{
-            Claim, ClaimIssuer, ClaimValidator, ClaimsIdentity, SignedClaim, SignedClaimVerifier,
-            claim_types,
+            claim_types, Claim, ClaimIssuer, ClaimValidator, ClaimsIdentity, SignedClaim,
+            SignedClaimVerifier,
         },
         context::{SecurityContext, SecurityContextBuilder},
         crypto::{Decryptor, Encryptor, KeyDerivation, KeyGenerator, Signer, Verifier},

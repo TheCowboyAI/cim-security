@@ -245,7 +245,7 @@ pub struct MfaChallenge {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::claims::{Claim, claim_types};
+    use crate::claims::{claim_types, Claim};
     use serde_json::json;
 
     #[test]

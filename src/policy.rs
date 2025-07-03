@@ -132,11 +132,11 @@ pub enum PolicyCondition {
     /// Matches if the identity has any of the specified claims
     HasAnyClaim(Vec<String>),
     /// Matches if a property equals a value
-    PropertyEquals { 
+    PropertyEquals {
         /// The property key to check
-        key: String, 
+        key: String,
         /// The expected value
-        value: String 
+        value: String,
     },
     /// Matches if all sub-conditions match
     And(Vec<PolicyCondition>),
@@ -352,7 +352,7 @@ fn pattern_matches(pattern: &str, value: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::claims::{Claim, ClaimsIdentity, claim_types};
+    use crate::claims::{claim_types, Claim, ClaimsIdentity};
     use serde_json::json;
 
     #[test]
@@ -387,13 +387,11 @@ mod tests {
         assert!(PolicyCondition::InRole("admin".to_string()).evaluate(&context));
         assert!(!PolicyCondition::InRole("user".to_string()).evaluate(&context));
 
-        assert!(
-            PolicyCondition::PropertyEquals {
-                key: "ip".to_string(),
-                value: "192.168.1.1".to_string(),
-            }
-            .evaluate(&context)
-        );
+        assert!(PolicyCondition::PropertyEquals {
+            key: "ip".to_string(),
+            value: "192.168.1.1".to_string(),
+        }
+        .evaluate(&context));
 
         // Test compound conditions
         let and_condition = PolicyCondition::And(vec![
@@ -451,11 +449,9 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(decision.effect, PolicyEffect::Allow);
-        assert!(
-            decision
-                .matched_rules
-                .contains(&"allow-readers".to_string())
-        );
+        assert!(decision
+            .matched_rules
+            .contains(&"allow-readers".to_string()));
 
         // Test denied action
         let decision = evaluator
